@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thanh Toán Đăng Ký | TriThức.AI</title>
+  <meta name="description" content="Hoàn tất thanh toán để đăng ký khóa học Đóng Gói Tri Thức Thành Tiền Bằng AI.">
+  <meta name="robots" content="noindex">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --gradient-blue: #3B82F6;
+      --gradient-purple: #7C3AED;
+    }
+    * { font-family: 'DM Sans', 'Be Vietnam Pro', sans-serif; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'Be Vietnam Pro', sans-serif; }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--gradient-blue), var(--gradient-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .glow-blue { box-shadow: 0 0 30px rgba(59, 130, 246, 0.3); }
+    .gradient-mesh {
+      background:
+        radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+        #0F172A;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-900 text-gray-300 antialiased overflow-x-hidden min-h-screen flex flex-col">
+
+  <!-- Minimal header -->
+  <header class="px-4 md:px-8 py-6">
+    <div class="max-w-7xl mx-auto flex items-center gap-2">
+      <a href="index.html" class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl">TT</div>
+        <span class="text-white font-bold text-xl">TriThức.AI</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="flex-1 flex items-center justify-center px-4 md:px-8 gradient-mesh py-16">
+    <div class="max-w-md w-full">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Hoàn Tất Thanh Toán</h1>
+        <p class="text-gray-400">Quét mã VietQR bên dưới để chuyển khoản đăng ký</p>
+      </div>
+
+      <div class="glass rounded-2xl p-8">
+        <!-- Order summary -->
+        <div class="flex items-center justify-between mb-6 pb-6 border-b border-white/10">
+          <div>
+            <p class="text-sm text-gray-400">Gói đã chọn</p>
+            <p id="tier-name" class="text-xl font-bold text-white">—</p>
+          </div>
+          <div class="text-right">
+            <p id="tier-price" class="text-2xl font-bold gradient-text">—</p>
+            <p class="text-xs text-gray-500">một lần</p>
+          </div>
+        </div>
+
+        <!-- QR -->
+        <div class="bg-white/5 rounded-xl p-4 mb-6">
+          <img id="qr-image" src="" alt="SePay QR Code" class="w-56 h-56 mx-auto rounded-lg bg-white p-2">
+          <p class="text-xs text-gray-500 text-center mt-3">
+            Ngân hàng: TPBank<br>
+            STK: 0030 1638 711<br>
+            Chủ TK: DUONG THU TRA
+          </p>
+        </div>
+
+        <a href="thank-you.html" class="block w-full py-4 px-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center font-semibold text-lg hover:shadow-xl hover:scale-105 transition-all duration-200 glow-blue">
+          Tôi Đã Chuyển Khoản Xong
+        </a>
+      </div>
+
+      <p class="text-center text-sm text-gray-500 mt-6">
+        Chọn nhầm gói? <a href="index.html#pricing" class="text-blue-400 hover:text-blue-300 underline">Quay lại chọn gói khác</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="py-8 px-4 md:px-8 text-center text-xs text-gray-600">
+    © 2026 TriThức.AI. Đã đăng ký bản quyền.
+  </footer>
+
+  <script>
+    const TIERS = {
+      coban: {
+        name: 'Cơ Bản',
+        price: '990.000₫',
+        amount: 990000,
+        des: 'TRITHUCAI_COBAN'
+      },
+      trongoi: {
+        name: 'Trọn Gói',
+        price: '2.490.000₫',
+        amount: 2490000,
+        des: 'TRITHUCAI_TRONGOI'
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const tierKey = TIERS[params.get('tier')] ? params.get('tier') : 'trongoi';
+    const tier = TIERS[tierKey];
+
+    document.getElementById('tier-name').textContent = tier.name;
+    document.getElementById('tier-price').textContent = tier.price;
+    document.getElementById('qr-image').src =
+      `https://qr.sepay.vn/img?acc=00301638711&bank=TPBank&amount=${tier.amount}&des=${tier.des}&template=compact`;
+    document.getElementById('qr-image').alt = `SePay QR Code - Gói ${tier.name}`;
+  </script>
+
+</body>
+</html>
