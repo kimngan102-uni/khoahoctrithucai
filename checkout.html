@@ -64,7 +64,15 @@
         <p class="text-gray-400">Quét mã VietQR bên dưới để chuyển khoản đăng ký</p>
       </div>
 
-      <div class="glass rounded-2xl p-8">
+      <div id="closed-panel" class="hidden glass rounded-2xl p-8 text-center">
+        <h2 class="text-xl font-bold text-white mb-3">Gói Cơ Bản Đã Đóng Đăng Ký</h2>
+        <p class="text-gray-400 mb-6">Đợt 1 đã kết thúc vào 21/07. Từ 22/07, khóa học chỉ còn nhận đăng ký ở gói Trọn Gói.</p>
+        <a href="checkout.html?tier=trongoi" class="block w-full py-3 px-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center font-semibold hover:shadow-xl hover:scale-105 transition-all duration-200">
+          Đăng Ký Gói Trọn Gói
+        </a>
+      </div>
+
+      <div id="checkout-panel" class="glass rounded-2xl p-8">
         <!-- Order summary -->
         <div class="flex items-center justify-between mb-6 pb-6 border-b border-white/10">
           <div>
@@ -128,18 +136,36 @@
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwRKQTwgnDATZ4552wPRj0PMdpLYP32MHHEEhIBrHYOY1Jo64KjhKPYoF41dldsFHk/exec';
     const COURSE_NAME = 'Biến Tri Thức Thành Tiền – Cùng AI';
 
+    // Wave pricing — same cutoffs as index.html, kept in sync manually since this is a
+    // static site with no shared backend/config.
+    const PHASE2_START = new Date('2026-07-22T00:00:00+07:00');
+    const PHASE3_START = new Date('2026-07-27T00:00:00+07:00');
+
+    function getCurrentPhase() {
+      const now = new Date();
+      if (now >= PHASE3_START) return 3;
+      if (now >= PHASE2_START) return 2;
+      return 1;
+    }
+    const PHASE = getCurrentPhase();
+
+    const TRONGOI_BY_PHASE = {
+      1: { price: '2.490.000₫', amount: 2490000, des: 'TRITHUCAI_TRONGOI_DOT1' },
+      2: { price: '4.000.000₫', amount: 4000000, des: 'TRITHUCAI_TRONGOI_DOT2' },
+      3: { price: '5.500.000₫', amount: 5500000, des: 'TRITHUCAI_TRONGOI_DOT3' }
+    };
+
     const TIERS = {
       coban: {
         name: 'Cơ Bản',
         price: '990.000₫',
         amount: 990000,
-        des: 'TRITHUCAI_COBAN'
+        des: 'TRITHUCAI_COBAN',
+        closedFromPhase: 2
       },
       trongoi: {
         name: 'Trọn Gói',
-        price: '2.490.000₫',
-        amount: 2490000,
-        des: 'TRITHUCAI_TRONGOI'
+        ...TRONGOI_BY_PHASE[PHASE]
       }
     };
 
@@ -147,11 +173,16 @@
     const tierKey = TIERS[params.get('tier')] ? params.get('tier') : 'trongoi';
     const tier = TIERS[tierKey];
 
-    document.getElementById('tier-name').textContent = tier.name;
-    document.getElementById('tier-price').textContent = tier.price;
-    document.getElementById('qr-image').src =
-      `https://qr.sepay.vn/img?acc=00301638711&bank=TPBank&amount=${tier.amount}&des=${tier.des}&template=compact`;
-    document.getElementById('qr-image').alt = `SePay QR Code - Gói ${tier.name}`;
+    if (tier.closedFromPhase && PHASE >= tier.closedFromPhase) {
+      document.getElementById('checkout-panel').classList.add('hidden');
+      document.getElementById('closed-panel').classList.remove('hidden');
+    } else {
+      document.getElementById('tier-name').textContent = tier.name;
+      document.getElementById('tier-price').textContent = tier.price;
+      document.getElementById('qr-image').src =
+        `https://qr.sepay.vn/img?acc=00301638711&bank=TPBank&amount=${tier.amount}&des=${tier.des}&template=compact`;
+      document.getElementById('qr-image').alt = `SePay QR Code - Gói ${tier.name}`;
+    }
 
     // Affiliate tracking: ?ref=CODE on this page's own URL wins; otherwise fall back to
     // whatever index.html already stored in localStorage for this visit.
