@@ -88,10 +88,29 @@
         <a href="#how-it-works" class="text-gray-300 hover:text-white transition-colors duration-200">Lộ trình học</a>
         <a href="#pricing" class="text-gray-300 hover:text-white transition-colors duration-200">Học phí</a>
         <a href="#faq" class="text-gray-300 hover:text-white transition-colors duration-200">Câu hỏi</a>
-        <a href="affiliate.html" class="text-gray-300 hover:text-white transition-colors duration-200">Tiếp Thị Liên Kết</a>
       </div>
 
       <div class="flex items-center space-x-4">
+        <div class="relative hidden sm:block">
+          <button id="affiliate-toggle" type="button" class="flex items-center gap-1.5 text-gray-300 hover:text-white text-sm font-semibold transition-colors duration-200">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 010 5.656l-3 3a4 4 0 01-5.656-5.656l1.5-1.5M10.172 13.828a4 4 0 010-5.656l3-3a4 4 0 015.656 5.656l-1.5 1.5"/></svg>
+            Lấy Link Tiếp Thị
+          </button>
+          <div id="affiliate-dropdown" class="hidden absolute right-0 top-full mt-4 w-80 glass rounded-2xl p-6 shadow-2xl z-50 text-left">
+            <p class="text-sm font-semibold text-white mb-1">Lấy Link Tiếp Thị Của Bạn</p>
+            <p class="text-xs text-gray-500 mb-3">Nhập tên hoặc SĐT để làm mã giới thiệu</p>
+            <input type="text" id="aff-name-desktop" placeholder="Nguyen Van A hoặc 0912345678" class="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors mb-3">
+            <button type="button" id="aff-generate-desktop" class="w-full py-2.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-semibold hover:opacity-90 transition">Tạo Link Của Tôi</button>
+            <div id="aff-result-desktop" class="hidden mt-4 pt-4 border-t border-white/10">
+              <div class="flex gap-2">
+                <input type="text" id="aff-link-desktop" readonly class="flex-1 min-w-0 px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-xs">
+                <button type="button" id="aff-copy-desktop" class="px-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs font-semibold whitespace-nowrap">Copy</button>
+              </div>
+              <p id="aff-feedback-desktop" class="hidden text-xs text-blue-400 mt-2">Đã copy vào clipboard!</p>
+            </div>
+          </div>
+        </div>
+
         <a href="#pricing" class="hidden sm:inline-block px-6 py-2.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200">
           Đăng Ký Ngay
         </a>
@@ -108,7 +127,21 @@
       <a href="#how-it-works" class="text-gray-300 hover:text-white transition-colors duration-200 py-2">Lộ trình học</a>
       <a href="#pricing" class="text-gray-300 hover:text-white transition-colors duration-200 py-2">Học phí</a>
       <a href="#faq" class="text-gray-300 hover:text-white transition-colors duration-200 py-2">Câu hỏi</a>
-      <a href="affiliate.html" class="text-gray-300 hover:text-white transition-colors duration-200 py-2">Tiếp Thị Liên Kết</a>
+
+      <div class="pt-2 border-t border-white/10">
+        <p class="text-sm font-semibold text-white mb-1">Lấy Link Tiếp Thị Của Bạn</p>
+        <p class="text-xs text-gray-500 mb-3">Nhập tên hoặc SĐT để làm mã giới thiệu</p>
+        <input type="text" id="aff-name-mobile" placeholder="Nguyen Van A hoặc 0912345678" class="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors mb-3">
+        <button type="button" id="aff-generate-mobile" class="w-full py-2.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-semibold hover:opacity-90 transition">Tạo Link Của Tôi</button>
+        <div id="aff-result-mobile" class="hidden mt-4 pt-4 border-t border-white/10">
+          <div class="flex gap-2">
+            <input type="text" id="aff-link-mobile" readonly class="flex-1 min-w-0 px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-xs">
+            <button type="button" id="aff-copy-mobile" class="px-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs font-semibold whitespace-nowrap">Copy</button>
+          </div>
+          <p id="aff-feedback-mobile" class="hidden text-xs text-blue-400 mt-2">Đã copy vào clipboard!</p>
+        </div>
+      </div>
+
       <a href="#pricing" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold text-center hover:shadow-lg transition-all duration-200">
         Đăng Ký Ngay
       </a>
@@ -744,6 +777,53 @@
       const refFromUrl = new URLSearchParams(window.location.search).get('ref');
       if (refFromUrl) localStorage.setItem('refCode', refFromUrl);
     })();
+
+    // Inline "get affiliate link" widget in the navbar — no separate page needed.
+    // Same generator logic as affiliate.html, wired twice (desktop dropdown + mobile menu).
+    function setupAffiliateWidget(suffix) {
+      const nameInput = document.getElementById('aff-name-' + suffix);
+      const generateBtn = document.getElementById('aff-generate-' + suffix);
+      const resultBox = document.getElementById('aff-result-' + suffix);
+      const linkInput = document.getElementById('aff-link-' + suffix);
+      const copyBtn = document.getElementById('aff-copy-' + suffix);
+      const feedback = document.getElementById('aff-feedback-' + suffix);
+
+      generateBtn.addEventListener('click', () => {
+        const raw = nameInput.value.trim();
+        if (!raw) {
+          alert('Vui lòng nhập tên hoặc số điện thoại của bạn.');
+          return;
+        }
+        const code = encodeURIComponent(raw.replace(/\s+/g, ''));
+        const link = window.location.origin + '/?ref=' + code;
+        linkInput.value = link;
+        resultBox.classList.remove('hidden');
+        feedback.classList.add('hidden');
+      });
+
+      copyBtn.addEventListener('click', () => {
+        linkInput.select();
+        navigator.clipboard.writeText(linkInput.value).then(() => {
+          feedback.classList.remove('hidden');
+          setTimeout(() => feedback.classList.add('hidden'), 2000);
+        });
+      });
+    }
+    setupAffiliateWidget('desktop');
+    setupAffiliateWidget('mobile');
+
+    // Desktop dropdown toggle — open on click, close on outside click.
+    const affiliateToggle = document.getElementById('affiliate-toggle');
+    const affiliateDropdown = document.getElementById('affiliate-dropdown');
+    affiliateToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      affiliateDropdown.classList.toggle('hidden');
+    });
+    document.addEventListener('click', (e) => {
+      if (!affiliateDropdown.contains(e.target) && !affiliateToggle.contains(e.target)) {
+        affiliateDropdown.classList.add('hidden');
+      }
+    });
 
     // Wave pricing: Đợt 1 (đến hết 21/07) -> Đợt 2 (22/07-26/07, 4.000.000đ, Cơ Bản đóng) ->
     // Đợt 3 (từ 27/07 đến khai giảng 29/07, 5.500.000đ). Same cutoffs are duplicated in
