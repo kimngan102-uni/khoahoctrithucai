@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cảm Ơn Bạn Đã Đăng Ký! | TriThức.AI</title>
-  <meta name="description" content="Đăng ký thành công khóa học Đóng Gói Tri Thức Thành Tiền Bằng AI. Tham gia nhóm Zalo học viên để nhận link khóa học.">
+  <meta name="description" content="Đăng ký thành công khóa học Đóng Gói Tri Thức Thành Tiền Bằng AI. Link nhóm Zalo sẽ được gửi sau khi xác nhận thanh toán.">
   <meta name="robots" content="noindex">
 
   <!-- Tailwind CSS CDN -->
@@ -84,26 +84,23 @@
         Thank You!
       </h1>
       <p class="text-lg text-gray-400 mb-10 leading-relaxed">
-        Chúng tôi đã ghi nhận việc đăng ký của bạn. Bước cuối cùng: quét mã QR bên dưới bằng Zalo (hoặc bấm nút) để tham gia nhóm học viên và nhận link khóa học.
+        Chúng tôi đã ghi nhận thông tin đăng ký của bạn. Link nhóm Zalo <span class="text-white font-semibold">không</span> được gửi tự động — đội ngũ sẽ đối chiếu giao dịch chuyển khoản trước khi gửi.
       </p>
 
-      <!-- Zalo community QR card -->
-      <div class="bg-white rounded-2xl p-8 mb-6 text-slate-900">
-        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 flex items-center justify-center">
-          <svg class="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+      <!-- Pending verification card -->
+      <div class="glass rounded-2xl p-8 mb-6">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-orange-500/10 flex items-center justify-center">
+          <svg class="w-8 h-8 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
         </div>
-        <h2 class="text-xl font-bold mb-1">Biến Tri Thức Thành Tiền – Cùng AI</h2>
-        <p class="text-slate-500 mb-6">Nhóm Zalo</p>
-
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=https%3A%2F%2Fzalo.me%2Fg%2Fz3xnghvg1ja9btqnqswb" alt="Mã QR nhóm Zalo học viên" class="w-56 h-56 mx-auto mb-6">
-
-        <p class="text-slate-500 text-sm mb-6">Quét mã QR này bằng Zalo để tham gia</p>
-
-        <a href="https://zalo.me/g/z3xnghvg1ja9btqnqswb" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300">
-          Tham Gia Nhóm Zalo Ngay
-        </a>
+        <h2 class="text-xl font-bold text-white mb-3">Đang Chờ Xác Nhận Thanh Toán</h2>
+        <p class="text-gray-400 leading-relaxed mb-4">
+          Sau khi đối chiếu giao dịch chuyển khoản của bạn với ngân hàng, chúng tôi sẽ chủ động nhắn Zalo gửi link nhóm học viên trực tiếp tới <span class="text-white font-semibold">số điện thoại bạn vừa đăng ký</span> — thường trong vòng 24 giờ.
+        </p>
+        <p class="text-sm text-gray-500">
+          Vui lòng đảm bảo số điện thoại đó cũng là số Zalo đang dùng để nhận được tin nhắn.
+        </p>
       </div>
 
       <p class="text-sm text-gray-500">
